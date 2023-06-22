@@ -1,7 +1,7 @@
 public class Estacion {
     private String apiStatus;
     private String time;
-    private boolean issues;
+    private String issues;
     private List<Linea> lines;
 
     public String getApiStatus() {
@@ -20,11 +20,11 @@ public class Estacion {
         this.time = time;
     }
 
-    public boolean isIssues() {
+    public String getIssues() {
         return issues;
     }
 
-    public void setIssues(boolean issues) {
+    public void setIssues(String issues) {
         this.issues = issues;
     }
 
@@ -39,8 +39,8 @@ public class Estacion {
     public static class Linea {
         private String name;
         private String id;
-        private boolean issues;
-        private int stationsClosedBySchedule;
+        private String issues;
+        private String stationsClosedBySchedule;
         private List<EstacionDetalle> stations;
 
         public String getName() {
@@ -59,19 +59,19 @@ public class Estacion {
             this.id = id;
         }
 
-        public boolean isIssues() {
+        public String getIssues() {
             return issues;
         }
 
-        public void setIssues(boolean issues) {
+        public void setIssues(String issues) {
             this.issues = issues;
         }
 
-        public int getStationsClosedBySchedule() {
+        public String getStationsClosedBySchedule() {
             return stationsClosedBySchedule;
         }
 
-        public void setStationsClosedBySchedule(int stationsClosedBySchedule) {
+        public void setStationsClosedBySchedule(String stationsClosedBySchedule) {
             this.stationsClosedBySchedule = stationsClosedBySchedule;
         }
 
@@ -87,10 +87,10 @@ public class Estacion {
     public static class EstacionDetalle {
         private String name;
         private String id;
-        private int status;
+        private String status;
         private List<String> lines;
         private String description;
-        private boolean isClosedBySchedule;
+        private String isClosedBySchedule;
         private Horario schedule;
 
         public String getName() {
@@ -109,11 +109,11 @@ public class Estacion {
             this.id = id;
         }
 
-        public int getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(int status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 
@@ -133,11 +133,11 @@ public class Estacion {
             this.description = description;
         }
 
-        public boolean isClosedBySchedule() {
+        public String isClosedBySchedule() {
             return isClosedBySchedule;
         }
 
-        public void setClosedBySchedule(boolean closedBySchedule) {
+        public void setClosedBySchedule(String closedBySchedule) {
             isClosedBySchedule = closedBySchedule;
         }
 
@@ -201,83 +201,28 @@ public class Estacion {
         }
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Estacion{")
-                .append("apiStatus='").append(apiStatus).append('\'')
-                .append(", time='").append(time).append('\'')
-                .append(", issues=").append(issues)
-                .append(", lines=[");
-
-        if (lines != null) {
-            for (Linea linea : lines) {
-                sb.append("{")
-                        .append("name='").append(linea.getName()).append('\'')
-                        .append(", id='").append(linea.getId()).append('\'')
-                        .append(", issues=").append(linea.isIssues())
-                        .append(", stationsClosedBySchedule=").append(linea.getStationsClosedBySchedule())
-                        .append(", stations=[");
-
-                if (linea.getStations() != null) {
-                    for (EstacionDetalle estacionDetalle : linea.getStations()) {
-                        sb.append("{")
-                                .append("name='").append(estacionDetalle.getName()).append('\'')
-                                .append(", id='").append(estacionDetalle.getId()).append('\'')
-                                .append(", status=").append(estacionDetalle.getStatus())
-                                .append(", lines=").append(estacionDetalle.getLines())
-                                .append(", description='").append(estacionDetalle.getDescription()).append('\'')
-                                .append(", isClosedBySchedule=").append(estacionDetalle.isClosedBySchedule())
-                                .append(", schedule={");
-
-                        Horario horario = estacionDetalle.getSchedule();
-                        if (horario != null) {
-                            sb.append("open={")
-                                    .append("weekdays='").append(horario.getOpen().getWeekdays()).append('\'')
-                                    .append(", saturday='").append(horario.getOpen().getSaturday()).append('\'')
-                                    .append(", holidays='").append(horario.getOpen().getHolidays()).append('\'')
-                                    .append("}, close={")
-                                    .append("weekdays='").append(horario.getClose().getWeekdays()).append('\'')
-                                    .append(", saturday='").append(horario.getClose().getSaturday()).append('\'')
-                                    .append(", holidays='").append(horario.getClose().getHolidays()).append('\'')
-                                    .append("}");
-                        }
-
-                        sb.append("}}");
-                    }
-                }
-
-                sb.append("]}, ");
-            }
-        }
-
-        sb.append("]}");
-
-        return sb.toString();
-    }
-
     public String toStringSingleLine() {
         List<String> valuesList = new ArrayList<>();
 
         valuesList.add(apiStatus);
         valuesList.add(time);
-        valuesList.add(String.valueOf(issues));
+        valuesList.add(issues);
 
         if (lines != null) {
             for (Linea linea : lines) {
                 valuesList.add(linea.getName());
                 valuesList.add(linea.getId());
-                valuesList.add(String.valueOf(linea.isIssues()));
-                valuesList.add(String.valueOf(linea.getStationsClosedBySchedule()));
+                valuesList.add(linea.getIssues());
+                valuesList.add(linea.getStationsClosedBySchedule());
 
                 if (linea.getStations() != null) {
                     for (EstacionDetalle estacionDetalle : linea.getStations()) {
                         valuesList.add(estacionDetalle.getName());
                         valuesList.add(estacionDetalle.getId());
-                        valuesList.add(String.valueOf(estacionDetalle.getStatus()));
+                        valuesList.add(estacionDetalle.getStatus());
                         valuesList.add(String.join(",", estacionDetalle.getLines()));
                         valuesList.add(estacionDetalle.getDescription());
-                        valuesList.add(String.valueOf(estacionDetalle.isClosedBySchedule()));
+                        valuesList.add(estacionDetalle.isClosedBySchedule());
 
                         Horario horario = estacionDetalle.getSchedule();
                         if (horario != null) {
