@@ -15,7 +15,6 @@ import java.util.List;
 public class JsonUrlReader2 {
 
     public JsonUrlReader2() {
-
     }
 
     public ArrayList<Estacion> cargarURL() throws StreamReadException, DatabindException, MalformedURLException, IOException {
