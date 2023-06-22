@@ -79,7 +79,7 @@ public class WordCount {
 
     public interface WordCountOptions extends PipelineOptions {
         @Description("Path of the file to read from")
-        @Default.String("gs://dataflow-apache-quickstart_dataflowbatchjsoncsv/entrada/leo.txt")
+        @Default.String("gs://dataflow-apache-quickstart_ev3-dataflowbatchjasoncsv/entrada/palabra.txt")
         String getInputFile();
 
         void setInputFile(String value);
