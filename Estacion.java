@@ -2,7 +2,7 @@ public class Estacion {
     private String apiStatus;
     private String time;
     private String issues;
-    private List<Linea> lines;
+    private Linea linea;
 
     public String getApiStatus() {
         return apiStatus;
@@ -28,12 +28,12 @@ public class Estacion {
         this.issues = issues;
     }
 
-    public List<Linea> getLines() {
-        return lines;
+    public Linea getLinea() {
+        return linea;
     }
 
-    public void setLines(List<Linea> lines) {
-        this.lines = lines;
+    public void setLinea(Linea linea) {
+        this.linea = linea;
     }
 
     public static class Linea {
@@ -41,7 +41,7 @@ public class Estacion {
         private String id;
         private String issues;
         private String stationsClosedBySchedule;
-        private List<EstacionDetalle> stations;
+        private EstacionDetalle estacionDetalle;
 
         public String getName() {
             return name;
@@ -75,12 +75,12 @@ public class Estacion {
             this.stationsClosedBySchedule = stationsClosedBySchedule;
         }
 
-        public List<EstacionDetalle> getStations() {
-            return stations;
+        public EstacionDetalle getEstacionDetalle() {
+            return estacionDetalle;
         }
 
-        public void setStations(List<EstacionDetalle> stations) {
-            this.stations = stations;
+        public void setEstacionDetalle(EstacionDetalle estacionDetalle) {
+            this.estacionDetalle = estacionDetalle;
         }
     }
 
@@ -88,7 +88,7 @@ public class Estacion {
         private String name;
         private String id;
         private String status;
-        private List<String> lines;
+        private String lines;
         private String description;
         private String isClosedBySchedule;
         private Horario schedule;
@@ -117,11 +117,11 @@ public class Estacion {
             this.status = status;
         }
 
-        public List<String> getLines() {
+        public String getLines() {
             return lines;
         }
 
-        public void setLines(List<String> lines) {
+        public void setLines(String lines) {
             this.lines = lines;
         }
 
@@ -202,42 +202,39 @@ public class Estacion {
     }
 
     public String toStringSingleLine() {
-        List<String> valuesList = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
 
-        valuesList.add(apiStatus);
-        valuesList.add(time);
-        valuesList.add(issues);
+        stringBuilder.append(apiStatus).append(",");
+        stringBuilder.append(time).append(",");
+        stringBuilder.append(issues).append(",");
 
-        if (lines != null) {
-            for (Linea linea : lines) {
-                valuesList.add(linea.getName());
-                valuesList.add(linea.getId());
-                valuesList.add(linea.getIssues());
-                valuesList.add(linea.getStationsClosedBySchedule());
+        if (linea != null) {
+            stringBuilder.append(linea.getName()).append(",");
+            stringBuilder.append(linea.getId()).append(",");
+            stringBuilder.append(linea.getIssues()).append(",");
+            stringBuilder.append(linea.getStationsClosedBySchedule()).append(",");
 
-                if (linea.getStations() != null) {
-                    for (EstacionDetalle estacionDetalle : linea.getStations()) {
-                        valuesList.add(estacionDetalle.getName());
-                        valuesList.add(estacionDetalle.getId());
-                        valuesList.add(estacionDetalle.getStatus());
-                        valuesList.add(String.join(",", estacionDetalle.getLines()));
-                        valuesList.add(estacionDetalle.getDescription());
-                        valuesList.add(estacionDetalle.isClosedBySchedule());
+            if (linea.getEstacionDetalle() != null) {
+                EstacionDetalle estacionDetalle = linea.getEstacionDetalle();
+                stringBuilder.append(estacionDetalle.getName()).append(",");
+                stringBuilder.append(estacionDetalle.getId()).append(",");
+                stringBuilder.append(estacionDetalle.getStatus()).append(",");
+                stringBuilder.append(estacionDetalle.getLines()).append(",");
+                stringBuilder.append(estacionDetalle.getDescription()).append(",");
+                stringBuilder.append(estacionDetalle.isClosedBySchedule()).append(",");
 
-                        Horario horario = estacionDetalle.getSchedule();
-                        if (horario != null) {
-                            valuesList.add(horario.getOpen().getWeekdays());
-                            valuesList.add(horario.getOpen().getSaturday());
-                            valuesList.add(horario.getOpen().getHolidays());
-                            valuesList.add(horario.getClose().getWeekdays());
-                            valuesList.add(horario.getClose().getSaturday());
-                            valuesList.add(horario.getClose().getHolidays());
-                        }
-                    }
+                Horario horario = estacionDetalle.getSchedule();
+                if (horario != null) {
+                    stringBuilder.append(horario.getOpen().getWeekdays()).append(",");
+                    stringBuilder.append(horario.getOpen().getSaturday()).append(",");
+                    stringBuilder.append(horario.getOpen().getHolidays()).append(",");
+                    stringBuilder.append(horario.getClose().getWeekdays()).append(",");
+                    stringBuilder.append(horario.getClose().getSaturday()).append(",");
+                    stringBuilder.append(horario.getClose().getHolidays());
                 }
             }
         }
 
-        return String.join(",", valuesList);
+        return stringBuilder.toString();
     }
 }
