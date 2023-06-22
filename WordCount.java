@@ -36,7 +36,8 @@ import org.apache.beam.sdk.values.PCollection;
 //import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.apache.beam.examples.JsonUrlReader2;
-import org.apache.beam.examples.estacion;
+import org.apache.beam.examples.Estacion;
+
 
 public class WordCount {
     static class ExtractWordsFn extends DoFn<String, String> {
@@ -79,7 +80,7 @@ public class WordCount {
 
     public interface WordCountOptions extends PipelineOptions {
         @Description("Path of the file to read from")
-        @Default.String("gs://dataflow-apache-quickstart_ev3-dataflowbatchjasoncsv/entrada/palabra.txt")
+        @Default.String("gs://dataflow-apache-quickstart_dataflowbatchjsoncsv/entrada/leo.txt")
         String getInputFile();
 
         void setInputFile(String value);
@@ -96,7 +97,6 @@ public class WordCount {
         pipeline.apply("ReadLines", TextIO.read().from(options.getInputFile()))
                 .apply(new CountWords())
                 .apply(MapElements.via(new FormatAsTextFn()))
-                .apply("WriteCounts", TextIO.write().to(options.getOutput()));
                 .apply("WriteCounts", TextIO.write().to(options.getOutput()));
         
         pipeline.run().waitUntilFinish();
